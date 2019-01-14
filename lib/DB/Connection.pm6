@@ -8,6 +8,8 @@ role DB::Connection
 
     method ping(--> Bool) {...}
 
+    method free(--> Nil) {...}
+
     method clear-cache(--> Nil)
     {
         .DESTROY for %!prepare-cache.values;
@@ -36,7 +38,7 @@ role DB::Connection
     method prepare(Str:D $query --> DB::Statement)
     {
         return $_ with %!prepare-cache{$query};
-        %!prepare-cache{$query} = $.prepare-nocache($query, :nocache)
+        %!prepare-cache{$query} = $.prepare-nocache($query)
     }
 
     method execute(Str:D $command, Bool :$finish, |args) {...}
@@ -65,5 +67,11 @@ role DB::Connection
         self.execute('rollback');
         $!transaction = False;
         self
+    }
+
+    submethod DESTROY()
+    {
+        self.clear-cache
+        self.free
     }
 }

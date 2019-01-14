@@ -36,7 +36,7 @@ role DB::Result
 
     method free() {}
 
-    method finish() { $.free; .finish with $!sth }
+    method finish() { self.free; .finish with $!sth }
 
     method row() { ... }
 
@@ -74,5 +74,10 @@ role DB::Result
     method hashes()
     {
         Seq.new: DB::Result::HashIterator.new(result => self, :$!finish)
+    }
+
+    submethod DESTROY()
+    {
+        self.free
     }
 }

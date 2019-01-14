@@ -44,8 +44,12 @@ role DB
     {
         while $_ = $!connections.pop
         {
-            .clear-cache;
             .DESTROY;
         }
+    }
+
+    submethod DESTROY()
+    {
+        self.finish
     }
 }

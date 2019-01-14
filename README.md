@@ -25,9 +25,76 @@ the connection.
 `.execute()` - Allocates a connection, calls `.execute()`, then
 returns the connection.
 
-`.finish()` - For each cached connection, call `.clear-cache()` and
-`.DESTROY()`.
+`.finish()` - For each cached connection, call `.DESTROY()`
 
+DB::Connection
+--------------
+
+A single active database connection.  It also implements functionality
+for a statement cache per connection, so you don't have to remember
+which statement was prepared, just call it again.
+
+`.ping(--> Bool)` - virtual, test if a connection is still active/viable.
+
+`.free()` - virtual, free the connection, don't make a `DESTROY()`,
+make this instead.
+
+`.clear-cache()` - Call `.DESTROY()` for each cached `Statement`.
+
+`.finish()` - Return connection to the main object's cache.
+
+`.prepare-nocache(Str:D $query --> DB::Statement)` - virtual, prepare
+the query as a statement.
+
+`.prepare(Str:D $query --> DB::Statement)` - Return a cached
+statement, or call `.prepare-nocache()`.
+
+`.execute(Str:D $command, Bool :$finish, |args)` - virtual method to
+execute a command.  The `$finish` argument says to call `.finish` when
+the `execute()` is finished.
+
+`.query(Str:D $query, Bool :$finish, |args)` - prepare, then execute
+the query
+
+`.begin`, `.commit`, `.rollback` - shortcuts
+
+`.DESTROY()` - `.clear-cache` and `.free`
+
+DB::Statement
+-------------
+
+A prepared statement, ready to execute.
+
+`.clear()` - Free any resources, but keep the statement ready to re-execute
+
+`.free()` - Free all resources
+
+`.execute()` - virtual method
+
+`.finish()` - `.clear`, then `$db.finish`
+
+DB::Result
+----------
+
+This gets returned with results of a query.  It holds the `Statement`,
+and relays the finish back up to the `Statement` to the `Database`.
+
+`.free()` - Free any resources
+
+`.finish()` - call `.free`, then call `.finish` on the `Statement`
+that returned these results.
+
+`.row()` - virtual, return the next row of results
+
+`.names()` - virtual, return the string labels for the columns in the
+results, used to construct `Hash`es.
+
+`.keys()` - Cache for `.names()` so we only call it once.
+
+`.value`, `.array`, `.hash`, `.arrays`, `.hashes` - Return results,
+then `.finish` the results.
+
+`.DESTROY()` - just call `.free()`
 
 Acknowledgements
 ----------------
