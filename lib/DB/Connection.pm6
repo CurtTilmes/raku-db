@@ -1,6 +1,6 @@
 use DB::Statement;
 
-role DB::Database
+role DB::Connection
 {
     has $.owner;
     has Bool $!transaction = False;
@@ -46,21 +46,21 @@ role DB::Database
         $.prepare($query).execute(|args, :$finish);
     }
 
-    method begin(--> DB::Database)
+    method begin(--> DB::Connection)
     {
         self.execute('begin');
         $!transaction = True;
         self
     }
 
-    method commit(--> DB::Database)
+    method commit(--> DB::Connection)
     {
         self.execute('commit');
         $!transaction = False;
         self
     }
 
-    method rollback(--> DB::Database)
+    method rollback(--> DB::Connection)
     {
         self.execute('rollback');
         $!transaction = False;

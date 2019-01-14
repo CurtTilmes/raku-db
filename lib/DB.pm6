@@ -1,14 +1,14 @@
 use Concurrent::Stack;
-use DB::Database;
+use DB::Connection;
 
 role DB
 {
     has $.max-connections = 5;
     has $.connections = Concurrent::Stack.new;
 
-    method connect(--> DB::Database) {...}
+    method connect(--> DB::Connection) {...}
 
-    method db(--> DB::Database)
+    method db(--> DB::Connection)
     {
         while my $db = $!connections.pop
         {
@@ -28,7 +28,7 @@ role DB
         $.db.execute(:finish, |args)
     }
 
-    method cache(DB::Database:D $db)
+    method cache(DB::Connection:D $db)
     {
         if $!connections.elems < $!max-connections
         {
