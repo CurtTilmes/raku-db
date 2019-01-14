@@ -71,7 +71,7 @@ role DB::Connection
 
     submethod DESTROY()
     {
-        self.clear-cache
+        self.clear-cache;
         self.free
     }
 }
