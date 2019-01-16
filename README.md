@@ -6,7 +6,7 @@ concrete modules for performing database access.
 
 You can't actually do anything directly with these.  The documentation
 here will only be useful if you want to understand the internals of
-the DB modules, or implement your own similar __DB::*__ module.
+the __DB__ modules, or implement your own similar __DB::*__ module.
 
 DB
 --
