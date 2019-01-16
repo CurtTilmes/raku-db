@@ -11,5 +11,5 @@ role DB::Statement
         $!db.finish
     }
 
-    submethod DESTROY() { $.free }
+    submethod DESTROY() { self.free }
 }
