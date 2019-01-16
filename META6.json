@@ -21,7 +21,7 @@
 
     "description" : "Base roles for DB::* family of SQL Database modules",
 
-    "test-depends" : [ "Test", "Test::When", "Test::META" ],
+    "test-depends" : [ "Test", "Test::META" ],
 
     "license" : "BSD-2-Clause",
 
