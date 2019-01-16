@@ -1,18 +1,15 @@
 role DB::Statement
 {
-    has $.db;
+    has $.db is required;
 
-    method clear() {}
+    method free(--> Nil) {}
 
-    method free() {}
+    method execute() {...}
 
-    method execute(|) {...}
-
-    method finish()
+    method finish(--> Nil)
     {
-        self.clear;
-        $!db.finish;
+        $!db.finish
     }
 
-    submethod DESTROY() { .free }
+    submethod DESTROY() { $.free }
 }

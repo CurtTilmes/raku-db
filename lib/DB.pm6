@@ -40,7 +40,7 @@ role DB
         }
     }
 
-    method finish()
+    method finish(--> Nil)
     {
         while $_ = $!connections.pop
         {

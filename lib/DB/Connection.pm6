@@ -2,17 +2,26 @@ use DB::Statement;
 
 role DB::Connection
 {
-    has $.owner;
+    has $.owner is required;
     has Bool $!transaction = False;
     has %!prepare-cache;
 
-    method ping(--> Bool) {...}
+    method ping(--> Bool) { True }
 
-    method free(--> Nil) {...}
+    method free(--> Nil) {}
+
+    method prepare-nocache(Str:D $query --> DB::Statement) {...}
+
+    # execute defaults to the same as query(), but some modules
+    # do different things with it.
+    method execute(Str:D $command, Bool :$finish, |args)
+    {
+        $.prepare($command).execute(|args, :$finish);
+    }
 
     method clear-cache(--> Nil)
     {
-        .DESTROY for %!prepare-cache.values;
+        .free for %!prepare-cache.values;
         %!prepare-cache = ()
     }
 
@@ -33,15 +42,11 @@ role DB::Connection
         }
     }
 
-    method prepare-nocache(Str:D $query --> DB::Statement) {...}
-
     method prepare(Str:D $query --> DB::Statement)
     {
         return $_ with %!prepare-cache{$query};
         %!prepare-cache{$query} = $.prepare-nocache($query)
     }
-
-    method execute(Str:D $command, Bool :$finish, |args) {...}
 
     method query(Str:D $query, Bool :$finish, |args)
     {

@@ -1,13 +1,12 @@
 class DB::Result::ArrayIterator does Iterator
 {
-    has $.result;
-    has Bool $.finish;
+    has $.result is required;
 
     method pull-one()
     {
         $!result.row or do
         {
-            $!result.finish if $!finish;
+            $!result.finish;
             IterationEnd
         }
     }
@@ -15,14 +14,13 @@ class DB::Result::ArrayIterator does Iterator
 
 class DB::Result::HashIterator does Iterator
 {
-    has $.result;
-    has Bool $.finish;
+    has $.result is required;
 
     method pull-one()
     {
         my $row = $!result.row or do
         {
-            $!result.finish if $!finish;
+            $!result.finish;
             return IterationEnd
         }
         %( $!result.keys.list Z=> @$row )
@@ -32,11 +30,15 @@ class DB::Result::HashIterator does Iterator
 role DB::Result
 {
     has $.sth;
-    has Bool $.finish = False;
+    has Bool $.finish;
 
     method free() {}
 
-    method finish() { self.free; .finish with $!sth }
+    method finish(--> Nil)
+    {
+        self.free;
+        $!sth.finish if $!finish && $!sth;
+    }
 
     method row() { ... }
 
@@ -50,30 +52,30 @@ role DB::Result
 
     method value()
     {
-        LEAVE $.finish if $!finish;
+        LEAVE $.finish;
         $.row[0]
     }
 
     method array()
     {
-        LEAVE $.finish if $!finish;
+        LEAVE $.finish;
         $.row
     }
 
     method hash()
     {
-        LEAVE $.finish if $!finish;
+        LEAVE $.finish;
         %( @$.keys Z=> @$.row )
     }
 
     method arrays()
     {
-        Seq.new: DB::Result::ArrayIterator.new(result => self, :$!finish)
+        Seq.new: DB::Result::ArrayIterator.new(result => self)
     }
 
     method hashes()
     {
-        Seq.new: DB::Result::HashIterator.new(result => self, :$!finish)
+        Seq.new: DB::Result::HashIterator.new(result => self)
     }
 
     submethod DESTROY()

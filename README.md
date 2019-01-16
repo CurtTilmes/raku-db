@@ -6,7 +6,7 @@ concrete modules for performing database access.
 
 You can't actually do anything directly with these.  The documentation
 here will only be useful if you want to understand the internals of
-the DB modules, or implement your own similar `DB::*` module.
+the DB modules, or implement your own similar __DB::*__ module.
 
 DB
 --
@@ -17,7 +17,6 @@ DB holds a cache of database connections.
 `.db(--> DB::Connection)` - Returns a cached connection
 
 `.cache(DB::Connection:D $db)` - Returns a connection to the cache
-
 
 `.query()` - Allocates a connection, calls `.query()`, then returns
 the connection.
@@ -34,10 +33,11 @@ A single active database connection.  It also implements functionality
 for a statement cache per connection, so you don't have to remember
 which statement was prepared, just call it again.
 
-`.ping(--> Bool)` - virtual, test if a connection is still active/viable.
+`.ping(--> Bool)` - test if a connection is still active/viable, to be
+overridden if possible.
 
-`.free()` - virtual, free the connection, don't make a `DESTROY()`,
-make this instead.
+`.free()` - free the connection, don't make a `DESTROY()`, make this
+instead, to be overridden.
 
 `.clear-cache()` - Call `.DESTROY()` for each cached `Statement`.
 
@@ -65,13 +65,13 @@ DB::Statement
 
 A prepared statement, ready to execute.
 
-`.clear()` - Free any resources, but keep the statement ready to re-execute
-
 `.free()` - Free all resources
 
 `.execute()` - virtual method
 
-`.finish()` - `.clear`, then `$db.finish`
+`.finish()` - Call the `.finish` on the owning **Connection**
+
+`.DESTROY()` - Just call `.free`
 
 DB::Result
 ----------
@@ -79,7 +79,7 @@ DB::Result
 This gets returned with results of a query.  It holds the `Statement`,
 and relays the finish back up to the `Statement` to the `Database`.
 
-`.free()` - Free any resources
+`.free()` - Free any resources, to be overridden if needed
 
 `.finish()` - call `.free`, then call `.finish` on the `Statement`
 that returned these results.
