@@ -18,13 +18,13 @@ DB holds a cache of database connections.
 
 `.cache(DB::Connection:D $db)` - Returns a connection to the cache
 
-`.query()` - Allocates a connection, calls `.query()`, then returns
+`.query()` - Allocates a connection, calls `.query`, then returns
 the connection.
 
-`.execute()` - Allocates a connection, calls `.execute()`, then
+`.execute()` - Allocates a connection, calls `.execute`, then
 returns the connection.
 
-`.finish()` - For each cached connection, call `.DESTROY()`
+`.finish()` - For each cached connection, call `.DESTROY`
 
 DB::Connection
 --------------
@@ -47,11 +47,11 @@ instead, to be overridden.
 the query as a statement.
 
 `.prepare(Str:D $query --> DB::Statement)` - Return a cached
-statement, or call `.prepare-nocache()`.
+statement, or call `.prepare-nocache`.
 
 `.execute(Str:D $command, Bool :$finish, |args)` - virtual method to
 execute a command.  The `$finish` argument says to call `.finish` when
-the `execute()` is finished.
+the `execute` is finished.
 
 `.query(Str:D $query, Bool :$finish, |args)` - prepare, then execute
 the query
@@ -89,12 +89,12 @@ that returned these results.
 `.names()` - virtual, return the string labels for the columns in the
 results, used to construct `Hash`es.
 
-`.keys()` - Cache for `.names()` so we only call it once.
+`.keys()` - Cache for `.names` so we only call it once.
 
 `.value`, `.array`, `.hash`, `.arrays`, `.hashes` - Return results,
-then `.finish` the results.
+then `.finish`
 
-`.DESTROY()` - just call `.free()`
+`.DESTROY()` - just call `.free`
 
 Acknowledgements
 ----------------

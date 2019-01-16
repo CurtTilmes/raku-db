@@ -13,7 +13,8 @@
         "DB"             : "lib/DB.pm6",
         "DB::Connection" : "lib/DB/Connection.pm6",
         "DB::Statement"  : "lib/DB/Statement.pm6",
-        "DB::Result"     : "lib/DB/Result.pm6"
+        "DB::Result"     : "lib/DB/Result.pm6",
+        "DB::Mock"       : "lib/DB/Mock.pm6"
     },
 
     "depends" : [ "Concurrent::Stack" ],
