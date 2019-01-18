@@ -27,8 +27,15 @@ role DB::Connection
 
     method finish(--> Nil)
     {
-        $.rollback if $!transaction;
-        $!owner.cache(self);
+        if $.ping
+        {
+            $.rollback if $!transaction;
+            $!owner.cache(self);
+        }
+        else
+        {
+            self.DESTROY
+        }
     }
 
     method prepare(Str:D $query, Bool :$nocache --> DB::Statement)

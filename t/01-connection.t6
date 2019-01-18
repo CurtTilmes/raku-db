@@ -1,7 +1,7 @@
 use Test;
 use DB::Mock;
 
-plan 15;
+plan 17;
 
 isa-ok my $m = DB::Mock.new, DB::Mock, 'Create object';
 
@@ -27,6 +27,10 @@ is $m.connections.elems, 0, 'Cache has no connections';
 $db.state = False; # Kill the connection
 
 lives-ok { $db.finish }, 'Finish dead connection';
+
+is $mock-connections, 0, 'Freed the bad connection';
+
+is $m.connections.elems, 0, 'Cache has no connections';
 
 my @conns = do $m.db for ^3;  # Create three connections;
 
