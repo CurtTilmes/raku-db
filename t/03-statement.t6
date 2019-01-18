@@ -81,12 +81,16 @@ $db.state = False; # Intentionally kill it
 
 $db.finish;        # and return it
 
-is $mock-connections, 0, 'No connections';
+$db = $m.db;       # Get connection
 
-is $mock-statements, 0, 'No statements';
+is $mock-connections, 1, '1 connections';
+
+$db.finish;
+
+is $mock-statements, 0, 'No statements';   # Bad connection cache cleared
 
 is $mock-results, 0, 'No results';
 
-is $m.connections.elems, 0, 'And no connections in cache';
+is $m.connections.elems, 1, '1 connections cache';
 
 lives-ok { $m.finish }, 'Finish the object';

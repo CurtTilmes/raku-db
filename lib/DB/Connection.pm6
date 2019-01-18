@@ -27,30 +27,20 @@ role DB::Connection
 
     method finish(--> Nil)
     {
-        if $.ping
-        {
-            if $!transaction
-            {
-                self.rollback;
-                $!transaction = False;
-            }
-            $!owner.cache(self);
-        }
-        else
-        {
-            self.DESTROY
-        }
+        $.rollback if $!transaction;
+        $!owner.cache(self);
     }
 
-    method prepare(Str:D $query --> DB::Statement)
+    method prepare(Str:D $query, Bool :$nocache --> DB::Statement)
     {
+        return $.prepare-nocache($query) if $nocache;
         return $_ with %!prepare-cache{$query};
         %!prepare-cache{$query} = $.prepare-nocache($query)
     }
 
-    method query(Str:D $query, Bool :$finish, |args)
+    method query(Str:D $query, Bool :$finish, Bool :$nocache, |args)
     {
-        $.prepare($query).execute(|args, :$finish);
+        $.prepare($query, :$nocache).execute(|args, :$finish);
     }
 
     method begin(--> DB::Connection)
