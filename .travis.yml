@@ -1,0 +1,11 @@
+language: perl6
+
+perl6:
+  - latest
+
+sudo: false
+
+install:
+  - rakudobrew build zef
+  - zef -v install --deps-only .
+  - prove6 t/*.t6
