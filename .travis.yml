@@ -8,4 +8,5 @@ sudo: false
 install:
   - rakudobrew build zef
   - zef -v install --deps-only .
+  - zef install TAP::Harness
   - prove6 t/*.t6
