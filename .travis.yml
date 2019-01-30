@@ -1,12 +1,18 @@
 language: perl6
 
+os:
+  - linux
+
 perl6:
   - latest
 
-sudo: false
+sudo: true
+
+before_script:
 
 install:
   - rakudobrew build zef
   - zef -v install --deps-only .
   - zef install TAP::Harness
-  - prove6 t/*.t6
+  - perl6 -MTAP -e 'exit(TAP::Harness.new.run(@*ARGS).result.has-errors)' t/*.t6
+  
