@@ -17,7 +17,7 @@
         "DB::Mock"       : "lib/DB/Mock.pm6"
     },
 
-    "depends" : [ "Concurrent::Stack" ],
+    "depends" : [ "Concurrent::Stack:ver<1.0>" ],
 
     "description" : "Base roles for DB::* family of SQL Database modules",
 
