@@ -46,8 +46,7 @@ role DB::Result
 
     method keys()
     {
-        state $keys;
-        $keys // ($keys = $.names)
+        $.names;
     }
 
     method value()
