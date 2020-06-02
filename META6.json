@@ -27,7 +27,7 @@
     "tags" : [ "DATABASE" ],
     "support" : {
         "email" : "curt@tilmes.org",
-        "source" : "https://github.com/CurtTilmes/perl6-db.git",
-        "bugtracker" : "https://github.com/CurtTilmes/perl6-db/issues"
+        "source" : "https://github.com/CurtTilmes/raku-db.git",
+        "bugtracker" : "https://github.com/CurtTilmes/raku-db/issues"
     }
 }
