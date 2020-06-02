@@ -42,10 +42,7 @@ role DB
 
     method finish(--> Nil)
     {
-        while $_ = $!connections.pop
-        {
-            .DESTROY;
-        }
+        .DESTROY while $_ = $!connections.pop
     }
 
     submethod DESTROY()

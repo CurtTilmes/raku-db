@@ -1,34 +1,33 @@
 {
-    "name" : "DB",
-
-    "version" : "0.4",
-
-    "source-url" : "https://github.com/CurtTilmes/perl6-db.git",
-
-    "perl" : "6.*",
-
-    "tags" : [ "DATABASE" ],
-
-    "provides" : {
-        "DB"             : "lib/DB.pm6",
-        "DB::Connection" : "lib/DB/Connection.pm6",
-        "DB::Statement"  : "lib/DB/Statement.pm6",
-        "DB::Result"     : "lib/DB/Result.pm6",
-        "DB::Mock"       : "lib/DB/Mock.pm6"
-    },
-
-    "depends" : [ "Concurrent::Stack" ],
-
-    "description" : "Base roles for DB::* family of SQL Database modules",
-
+    "meta-version" : "1",
+    "perl"         : "6.c",
+    "name"         : "DB",
+    "api"          : "1",
+    "version"      : "0.5",
+    "auth"         : "github:CurtTilmes",
+    "description"  : "Base roles for DB::* family of SQL Database modules",
+    "license"      : "BSD-2-Clause",
     "test-depends" : [ "Test", "Test::META", "Test::When" ],
-
-    "license" : "BSD-2-Clause",
-
-    "authors" : [ "Curt Tilmes <ctilmes@cpan.org>" ],
-
+    "depends"      : {
+        "runtime"  : {
+            "requires" : [ "Concurrent::Stack" ]
+        },
+        "test"     : {
+            "requires" : [ "Test", "Test::When" ]
+        }
+    },
+    "authors" : [ "Curt Tilmes <curt@tilmes.org>" ],
+    "provides" : {
+        "DB"             : "lib/DB.rakumod",
+        "DB::Connection" : "lib/DB/Connection.rakumod",
+        "DB::Statement"  : "lib/DB/Statement.rakumod",
+        "DB::Result"     : "lib/DB/Result.rakumod",
+        "DB::Mock"       : "lib/DB/Mock.rakumod"
+    },
+    "tags" : [ "DATABASE" ],
     "support" : {
-      "source" : "https://github.com/CurtTilmes/perl6-db.git",
-      "bugtracker" : "https://github.com/CurtTilmes/perl6-db/issues"
+        "email" : "curt@tilmes.org",
+        "source" : "https://github.com/CurtTilmes/perl6-db.git",
+        "bugtracker" : "https://github.com/CurtTilmes/perl6-db/issues"
     }
 }
